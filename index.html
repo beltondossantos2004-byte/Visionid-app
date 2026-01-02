@@ -1,88 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VisionID App</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VisionID</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- MediaPipe -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/face_detection.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans">
 
-    <nav class="bg-slate-950 border-b border-slate-800 text-white fixed w-full z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="eye" class="text-blue-500 w-8 h-8"></i>
-                    <span class="text-xl font-bold tracking-wider">VisionID</span>
-                </div>
-                <button onclick="alert('Menu aberto!')" class="md:hidden text-gray-400">
-                    <i data-lucide="menu"></i>
-                </button>
-            </div>
+<body class="bg-slate-900 text-slate-100">
+
+<nav class="bg-slate-950 border-b border-slate-800 p-4 flex items-center gap-3">
+    <i data-lucide="eye" class="text-blue-500 w-7 h-7"></i>
+    <span class="font-bold text-lg">VisionID</span>
+</nav>
+
+<main class="p-4 max-w-md mx-auto">
+
+    <h1 class="text-2xl font-bold text-center mb-4 text-blue-400">
+        Segurança por Visão Computacional
+    </h1>
+
+    <!-- CAMERA -->
+    <div class="relative bg-black rounded-xl overflow-hidden border border-slate-700">
+
+        <video id="camera" class="w-full h-64 object-cover hidden" autoplay playsinline></video>
+
+        <div id="overlay" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 cursor-pointer">
+            <i data-lucide="camera" class="w-14 h-14 mb-2"></i>
+            <p>Toque para ativar a câmera</p>
         </div>
-    </nav>
 
-    <div class="pt-24 pb-12 bg-slate-950 text-white">
-        <div class="px-4 text-center">
-            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mb-4">
-                Segurança por Visão Computacional
-            </h1>
-            <p class="text-slate-400 mb-8">
-                Monitoramento inteligente e detecção em tempo real na palma da sua mão.
-            </p>
-
-            <div class="bg-slate-900 rounded-xl border border-slate-800 p-3 shadow-2xl max-w-md mx-auto">
-                <div class="flex justify-between items-center mb-4 px-2">
-                    <div class="flex items-center gap-2">
-                        <span class="h-3 w-3 rounded-full bg-green-500 animate-pulse"></span>
-                        <span class="text-xs font-semibold text-slate-300">SISTEMA ATIVO</span>
-                    </div>
-                </div>
-                
-                <div class="relative bg-black rounded-lg overflow-hidden aspect-video border border-slate-700 mb-4">
-                    <div class="absolute top-2 left-2 bg-black/60 px-2 py-1 rounded text-xs text-green-400 font-mono">CAM-01 • Entrada</div>
-                    <div class="absolute inset-0 flex items-center justify-center text-slate-700">
-                        <i data-lucide="camera" class="w-12 h-12"></i>
-                    </div>
-                    <div class="absolute bottom-2 left-2 right-2 bg-slate-900/80 p-2 rounded flex items-center gap-2">
-                        <i data-lucide="check-circle" class="text-blue-400 w-4 h-4"></i>
-                        <span class="text-xs text-white">Face Reconhecida</span>
-                    </div>
-                </div>
-
-                <div class="bg-slate-800 rounded-lg p-4 flex justify-between items-center">
-                    <div>
-                        <p class="text-slate-400 text-xs">Eventos Hoje</p>
-                        <p class="text-2xl font-bold text-white">1,248</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-red-400 text-xs font-bold">! Alerta</p>
-                        <p class="text-slate-400 text-xs">Movimento Detectado</p>
-                    </div>
-                </div>
-            </div>
+        <div id="status" class="absolute bottom-2 left-2 bg-black/60 text-green-400 text-xs px-2 py-1 rounded">
+            Sistema pronto
         </div>
     </div>
 
-    <div class="py-12 bg-slate-900 px-4">
-        <h2 class="text-center text-2xl font-bold text-white mb-8">Funcionalidades</h2>
-        <div class="grid gap-6 max-w-md mx-auto">
-            <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                <i data-lucide="users" class="text-blue-500 w-8 h-8 mb-4"></i>
-                <h3 class="text-lg font-bold text-white">Reconhecimento Facial</h3>
-                <p class="text-slate-400 text-sm mt-2">Identifique visitantes autorizados automaticamente.</p>
-            </div>
-            <div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
-                <i data-lucide="shield" class="text-blue-500 w-8 h-8 mb-4"></i>
-                <h3 class="text-lg font-bold text-white">Segurança 24h</h3>
-                <p class="text-slate-400 text-sm mt-2">Alertas imediatos em caso de intrusão.</p>
-            </div>
-        </div>
-    </div>
+</main>
 
-    <script>
-        lucide.createIcons();
-    </script>
+<script>
+lucide.createIcons();
+
+const video = document.getElementById("camera");
+const overlay = document.getElementById("overlay");
+const statusBox = document.getElementById("status");
+
+let faceDetected = false;
+
+async function startCamera() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" },
+            audio: false
+        });
+
+        video.srcObject = stream;
+        overlay.style.display = "none";
+        video.classList.remove("hidden");
+
+        startDetection();
+    } catch (e) {
+        alert("Erro ao acessar a câmera.");
+        console.error(e);
+    }
+}
+
+overlay.onclick = startCamera;
+
+// ---------- DETECÇÃO FACIAL ----------
+const faceDetection = new FaceDetection({
+    locateFile: file =>
+        `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`
+});
+
+faceDetection.setOptions({
+    model: "short",
+    minDetectionConfidence: 0.6
+});
+
+faceDetection.onResults(results => {
+    if (results.detections.length > 0) {
+        statusBox.textContent = "👤 Face detectada";
+        statusBox.classList.add("text-green-400");
+    } else {
+        statusBox.textContent = "Aguardando rosto...";
+    }
+});
+
+// ---------- LOOP DE ANÁLISE ----------
+async function startDetection() {
+    const camera = new Camera(video, {
+        onFrame: async () => {
+            await faceDetection.send({ image: video });
+        },
+        width: 640,
+        height: 480
+    });
+    camera.start();
+}
+</script>
+
 </body>
 </html>
